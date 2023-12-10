@@ -21,10 +21,10 @@ export const StepRule: ParseRule<Step, { kind: StepKind }> = {
     let start: number
 
     while (true) {
-      start = parser.state.current
+      start = parser.current
 
       // advance until a opening token is found or reaching the end of step
-      const [opening, openAt] = parser.advanceWhile((c) => !SEPERATORS.includes(c))
+      const [opening, openAt] = parser.advanceWhile((ch) => !SEPERATORS.includes(ch))
 
       // end parsing when reaching the end of line or the end of file
       const isAtStepEnd = opening === "\n" || opening === "\0"
@@ -37,7 +37,7 @@ export const StepRule: ParseRule<Step, { kind: StepKind }> = {
 
       // try finding a matching closing token
       const [closing, closedAt] = parser.peekWhile(
-        (c) => ![rule.CLOSING, ...SEPERATORS].includes(c)
+        (ch) => ![rule.CLOSING, ...SEPERATORS].includes(ch)
       )
 
       if (closing !== rule.CLOSING) {
@@ -59,7 +59,7 @@ export const StepRule: ParseRule<Step, { kind: StepKind }> = {
       }
     }
 
-    const current = parser.state.current
+    const current = parser.current
     if (start !== current) {
       step.addText(parser.substring(start, current))
     }
@@ -68,6 +68,6 @@ export const StepRule: ParseRule<Step, { kind: StepKind }> = {
   }
 }
 
-const sample = "Crack [3 eggs] into a blender and [foobar]."
+const sample = "Crack [3 eggs] into a blender and {foobar} or {barbar|foobar}."
 const parser = new Parser(sample)
 console.log(StepRule.parse(parser, { kind: "requried" }))

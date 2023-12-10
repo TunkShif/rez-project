@@ -6,7 +6,15 @@ export class Parser {
   constructor(source: string)
   constructor(state: State)
   constructor(source: string | State) {
-    this.state = source instanceof State ? source : new State(source)
+    this.state = typeof source === "string" ? new State(source) : source
+  }
+
+  get current() {
+    return this.state.current
+  }
+
+  get end() {
+    return this.state.end
   }
 
   advance() {

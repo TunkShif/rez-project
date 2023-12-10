@@ -1,10 +1,13 @@
 import { Ingredient } from "../../ast/node"
 import { QuotedRule } from "../rule"
 
+const OPENING = "["
+const CLOSING = "]"
+
 export const IngredientRule: QuotedRule<Ingredient, null> = {
-  OPENING: "[",
-  CLOSING: "]",
+  OPENING,
+  CLOSING,
   parse: (parser) => {
-    return { type: "ingredient" }
+    return new Ingredient()
   }
 }

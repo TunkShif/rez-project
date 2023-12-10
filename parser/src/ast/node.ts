@@ -22,18 +22,23 @@ export class Step {
   }
 }
 
-export type Ingredient = {
-  type: "ingredient"
+// TODO
+export class Ingredient {
   name: Name
   unit: Unit | null
   quantity: Quantity | null
   content: (Quantity | Unit | Name | Text)[]
+  constructor() { }
 }
 
-export type Cookware = {
-  type: "cookware"
+export class Cookware {
   name: string
   ref: Ref
+
+  constructor(name: string, ref?: Ref) {
+    this.name = name
+    this.ref = ref ?? new Ref(name)
+  }
 }
 
 export type Duration = {
@@ -65,7 +70,9 @@ export type Name = {
   ref: Ref
 }
 
-export type Ref = {
-  type: "ref"
+export class Ref {
   id: string
+  constructor(id: string) {
+    this.id = id
+  }
 }
