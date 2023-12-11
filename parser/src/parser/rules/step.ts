@@ -1,7 +1,6 @@
-import { Step, StepKind } from "../../ast/node"
+import { Step, StepContent } from "../../ast/node"
 import { Parser } from "../../parser"
-import { ParseRule } from "../rule"
-import { State } from "../state"
+import { ParseRule, defineCompositeParser } from "../rule"
 import { CookwareRule } from "./cookware"
 import { DurationRule } from "./duration"
 import { IngredientRule } from "./ingredient"
@@ -14,60 +13,23 @@ const RULES = {
   "<": DurationRule
 }
 
-export const StepRule: ParseRule<Step, { kind: StepKind }> = {
-  parse: (parser, meta) => {
-    const step = new Step(meta.kind)
+const parseContent = defineCompositeParser<StepContent>({
+  SEPERATORS,
+  RULES,
+  isAtEnd: (ch) => ch === "\n" || ch === "\0"
+})
 
-    let start: number
-
-    while (true) {
-      start = parser.current
-
-      // advance until a opening token is found or reaching the end of step
-      const [opening, openAt] = parser.advanceWhile((ch) => !SEPERATORS.includes(ch))
-
-      // end parsing when reaching the end of line or the end of file
-      const isAtStepEnd = opening === "\n" || opening === "\0"
-      if (isAtStepEnd) break
-
-      // consume the opening token
-      parser.advance()
-
-      const rule = RULES[opening as "[" | "{" | "<"]
-
-      // try finding a matching closing token
-      const [closing, closedAt] = parser.peekWhile(
-        (ch) => ![rule.CLOSING, ...SEPERATORS].includes(ch)
-      )
-
-      if (closing !== rule.CLOSING) {
-        // when a matching closing token is not found, parse it as text
-        step.addText(parser.substring(start, closedAt))
-        parser.resetAt(closedAt)
-        continue
-      } else {
-        // when a matching closing token is found, parse it with according rule
-
-        if (start !== openAt) {
-          step.addText(parser.substring(start, openAt))
-        }
-
-        const state: State = { ...parser.state, end: closedAt }
-        const parsed = rule.parse(new Parser(state), null)
-        step.content.push(parsed)
-        parser.resetAt(closedAt + 1)
-      }
-    }
-
-    const current = parser.current
-    if (start !== current) {
-      step.addText(parser.substring(start, current))
-    }
+export const StepRule: ParseRule<Step> = {
+  parse: (parser) => {
+    // TODO: parse step kind
+    const content = parseContent(parser)
+    const step = new Step("requried", content)
 
     return step
   }
 }
 
-const sample = "Crack [3 eggs] into a blender and {foobar} or {barbar|foobar}."
+const sample = "* Add [#(125)@(g) (flour)], [#(250)@(ml) (milk)] and [#(1)@(pinch) of (salt)]."
+
 const parser = new Parser(sample)
-console.log(StepRule.parse(parser, { kind: "requried" }))
+console.log(StepRule.parse(parser))

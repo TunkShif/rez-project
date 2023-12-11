@@ -1,14 +1,16 @@
-import { Name } from "../../ast/node"
+import { Unit } from "../../ast/node"
 import { QuotedRule } from "../rule"
 
+const PEEK_AFTER_OPENING = "("
 const CLOSING = ")"
 
-export const NameRule: QuotedRule<Name> = {
+export const UnitRule: QuotedRule<Unit> = {
   CLOSING,
+  PEEK_AFTER_OPENING,
   parse: (parser) => {
     const start = parser.current
     parser.advanceWhile((ch) => ch !== ")")
     const name = parser.substring(start, parser.current)
-    return new Name(name)
+    return new Unit(name)
   }
 }

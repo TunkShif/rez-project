@@ -1,14 +1,16 @@
-import { Name } from "../../ast/node"
+import { Quantity } from "../../ast/node"
 import { QuotedRule } from "../rule"
 
+const PEEK_AFTER_OPENING = "("
 const CLOSING = ")"
 
-export const NameRule: QuotedRule<Name> = {
+export const QuantityRule: QuotedRule<Quantity> = {
   CLOSING,
+  PEEK_AFTER_OPENING,
   parse: (parser) => {
     const start = parser.current
     parser.advanceWhile((ch) => ch !== ")")
     const name = parser.substring(start, parser.current)
-    return new Name(name)
+    return new Quantity(name)
   }
 }

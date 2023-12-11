@@ -1,14 +1,30 @@
-import { Duration } from "../../ast/node"
-import { QuotedRule } from "../rule"
-import { State } from "../state"
+import { Duration, DurationContent, Quantity, Unit } from "../../ast/node"
+import { QuotedRule, defineCompositeParser } from "../rule"
+import { QuantityRule } from "./quantity"
+import { UnitRule } from "./unit"
 
-const OPENING = "<"
 const CLOSING = ">"
 
-const parse = (state: State) => { }
+const SEPERATORS = ["#", "@", ">"]
+
+const RULES = {
+  "#": QuantityRule,
+  "@": UnitRule
+}
+
+const parseContent = defineCompositeParser<DurationContent>({
+  SEPERATORS,
+  RULES,
+  isAtEnd: (ch) => ch === ">"
+})
 
 export const DurationRule: QuotedRule<Duration> = {
-  OPENING,
   CLOSING,
-  parse
+  parse: (parser) => {
+    const content = parseContent(parser)
+    // TODO: warning message
+    const time = content.find((c): c is Quantity => c instanceof Quantity)!
+    const unit = content.find((c): c is Unit => c instanceof Unit)!
+    return new Duration(time, unit, content)
+  }
 }

@@ -1,13 +1,11 @@
 import { Cookware, Ref } from "../../ast/node"
 import { QuotedRule } from "../rule"
 
-const OPENING = "{"
 const CLOSING = "}"
 
 const SEPARATORS = ["|", "}"]
 
-export const CookwareRule: QuotedRule<Cookware, null> = {
-  OPENING,
+export const CookwareRule: QuotedRule<Cookware> = {
   CLOSING,
   parse: (parser) => {
     const start = parser.current
