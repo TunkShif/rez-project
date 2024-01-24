@@ -1,0 +1,7 @@
+{
+  "name": "rez",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

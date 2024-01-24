@@ -2,7 +2,12 @@ export type Position = { line: number; column: number; offset: number }
 
 export type Range = { start: Position; end: Position }
 
-export class Node { }
+const nodeSymbol = Symbol("rez-node")
+
+export class Node {
+  // for nominal type behavior
+  protected __symbol = nodeSymbol
+}
 
 export class CompositeNode<ContentNode extends Node = Node> extends Node {
   content: ContentNode[]
@@ -34,7 +39,9 @@ export class Ingredient extends CompositeNode<IngredientContent> {
   name!: Name
   unit!: Unit | null
   quantity!: Quantity | null
+  optional!: boolean
   ref!: Ref
+
   constructor(name: Name, content?: IngredientContent[]) {
     super(content)
     this.name = name

@@ -1,9 +1,9 @@
 {
-  "name": "rez-parser",
+  "name": "@rez/parser",
   "module": "./src/index.ts",
   "type": "module",
   "devDependencies": {
-    "bun-types": "latest"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

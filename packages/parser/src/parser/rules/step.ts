@@ -1,6 +1,6 @@
-import { Step, StepContent } from "../../ast/node"
+import { Step, type StepContent } from "../../ast/node"
 import { Parser } from "../../parser"
-import { ParseRule, defineCompositeParser } from "../rule"
+import { type ParseRule, defineCompositeParser } from "../rule"
 import { CookwareRule } from "./cookware"
 import { DurationRule } from "./duration"
 import { IngredientRule } from "./ingredient"

@@ -1,5 +1,5 @@
 import { Cookware, Ref } from "../../ast/node"
-import { QuotedRule } from "../rule"
+import type { QuotedRule } from "../rule"
 
 const CLOSING = "}"
 
