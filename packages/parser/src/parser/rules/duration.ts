@@ -1,5 +1,5 @@
-import { Duration, DurationContent, Quantity, Unit } from "../../ast/node"
-import { QuotedRule, defineCompositeParser } from "../rule"
+import { Duration, type DurationContent, Quantity, Unit } from "../../ast/node"
+import { type QuotedRule, defineCompositeParser } from "../rule"
 import { QuantityRule } from "./quantity"
 import { UnitRule } from "./unit"
 

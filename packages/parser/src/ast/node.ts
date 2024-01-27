@@ -42,19 +42,20 @@ export class Ingredient extends CompositeNode<IngredientContent> {
   optional!: boolean
   ref!: Ref
 
-  constructor(name: Name, content?: IngredientContent[]) {
+  constructor(name: Name, content?: IngredientContent[], ref?: Ref) {
     super(content)
     this.name = name
+    this.ref = ref ?? new Ref(name.text)
   }
 }
 
 export class Cookware extends Node {
-  name: string
+  text: string
   ref: Ref
 
   constructor(name: string, ref?: Ref) {
     super()
-    this.name = name
+    this.text = name
     this.ref = ref ?? new Ref(name)
   }
 }
@@ -100,11 +101,11 @@ export class Unit extends Node {
 }
 
 export class Name extends Node {
-  name: string
+  text: string
 
   constructor(name: string) {
     super()
-    this.name = name
+    this.text = name
   }
 }
 

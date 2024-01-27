@@ -32,4 +32,4 @@ export const StepRule: ParseRule<Step> = {
 const sample = "* Add [#(125)@(g) (flour)], [#(250)@(ml) (milk)] and [#(1)@(pinch) of (salt)]."
 
 const parser = new Parser(sample)
-console.log(StepRule.parse(parser))
+console.log(StepRule.parse(parser).content)

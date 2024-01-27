@@ -1,5 +1,5 @@
-import { Unit } from "../../ast/node"
-import { QuotedRule } from "../rule"
+import { Unit } from "@/ast/node"
+import type { QuotedRule } from "@/parser/rule"
 
 const PEEK_AFTER_OPENING = "("
 const CLOSING = ")"

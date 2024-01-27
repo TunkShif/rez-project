@@ -1,4 +1,4 @@
-let sample = `
+const sample = `
 * Crack [#(3) (eggs)] into a {blender}.
 * Add [#(125)@(g) (flour)], [#(250)@(ml) (milk)] and [#(1)@(pinch) of (salt)].
 * Blitz until smooth.

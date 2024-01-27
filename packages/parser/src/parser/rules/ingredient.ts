@@ -1,5 +1,5 @@
-import { Ingredient, IngredientContent, Name, Quantity, Unit } from "../../ast/node"
-import { QuotedRule, defineCompositeParser } from "../rule"
+import { Ingredient, Name, Quantity, Unit, type IngredientContent } from "@/ast/node"
+import { defineCompositeParser, type QuotedRule } from "@/parser/rule"
 import { NameRule } from "./name"
 import { QuantityRule } from "./quantity"
 import { UnitRule } from "./unit"
@@ -29,11 +29,15 @@ export const IngredientRule: QuotedRule<Ingredient> = {
     const name = content.find((c): c is Name => c instanceof Name)!
     const unit = content.find((c): c is Unit => c instanceof Unit) ?? null
     const quantity = content.find((c): c is Quantity => c instanceof Quantity) ?? null
-    const ingredient = new Ingredient(name, content)
+
+    let ref: Ref | undefined = undefined
+
+    // TODO: parse ref
+
+    const ingredient = new Ingredient(name, content, ref)
     ingredient.unit = unit
     ingredient.quantity = quantity
 
-    // TODO: parse ref
     return ingredient
   }
 }

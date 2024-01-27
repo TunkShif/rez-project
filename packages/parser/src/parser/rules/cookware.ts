@@ -15,7 +15,9 @@ export const CookwareRule: QuotedRule<Cookware> = {
     let ref: Ref | undefined = undefined
 
     if (closing === "|") {
-      ref = new Ref(parser.substring(parser.current + 1, parser.end))
+      const start = parser.current + 1
+      parser.advanceWhile((ch) => ch !== CLOSING)
+      ref = new Ref(parser.substring(start, parser.current))
     }
 
     return new Cookware(name, ref)
